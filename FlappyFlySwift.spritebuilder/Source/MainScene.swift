@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Aleksey Zhilin. All rights reserved.
 //
 //  This code based on original tutorial from site https://www.makeschool.com
-//  Link to original post writen by benjaminencz
+//  Link to original post writen by Benjamin Encz
 //  https://www.makeschool.com/gamernews/369/build-your-own-flappy-bird-with-spritebuilder-and
 //
 
@@ -29,12 +29,12 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
     }
 
     // code connection vars from SpriteBuilder
-    var _hero:          CCSprite?;
-    var _ground1:       CCNode?;
-    var _ground2:       CCNode?;
-    var _physicsNode:   CCPhysicsNode?;
-    var _scoreLabel:    CCLabelTTF?;
-    var _restartButton: CCButton?;
+    var _hero:          CCSprite!;
+    var _ground1:       CCNode!;
+    var _ground2:       CCNode!;
+    var _physicsNode:   CCPhysicsNode!;
+    var _scoreLabel:    CCLabelTTF!;
+    var _restartButton: CCButton!;
 
     // this vars literally initialized
     var _points:                  Int        = 0;
@@ -66,7 +66,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
         self.userInteractionEnabled = true;
 
         // grounds setup
-        _grounds = [_ground1!, _ground2!];
+        _grounds = [_ground1, _ground2];
         for ground in _grounds
         {
             ground.physicsBody.collisionType = "level";
@@ -74,11 +74,11 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
         }
 
         // hero setup
-        _hero!.physicsBody.collisionType = "hero";
-        _hero!.zOrder = DrawingOrder.DrawingOrdeHero.rawValue;
+        _hero.physicsBody.collisionType = "hero";
+        _hero.zOrder = DrawingOrder.DrawingOrdeHero.rawValue;
 
         // collision delegate setup
-        _physicsNode!.collisionDelegate = self;
+        _physicsNode.collisionDelegate = self;
 
         // spawn obstacles
         self.spawnNewObstacle();
@@ -98,7 +98,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
     {
         nodeB.removeFromParent();
         _points++;
-        _scoreLabel!.string = String(_points);
+        _scoreLabel.string = String(_points);
         return true;
     }
 
@@ -109,11 +109,11 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
         {
             _scrollSpeed = 0;
             _gameOver = true;
-            _restartButton!.visible = true;
-            _hero!.rotation = 90;
-            _hero!.physicsBody.allowsRotation = false;
-            _hero!.stopAllActions();
-            _hero!.paused = true;
+            _restartButton.visible = true;
+            _hero.rotation = 90;
+            _hero.physicsBody.allowsRotation = false;
+            _hero.stopAllActions();
+            _hero.paused = true;
 
             let moveBy = CCActionMoveBy(duration: 0.2, position: ccp(-2, 2));
             let reverseMovement = moveBy.reverse();
@@ -149,8 +149,8 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
     {
         if !_gameOver
         {
-            _hero!.physicsBody.applyImpulse(ccp(0, CGFloat(400)));
-            _hero!.physicsBody.applyAngularImpulse(CGFloat(10_000));
+            _hero.physicsBody.applyImpulse(ccp(0, CGFloat(400)));
+            _hero.physicsBody.applyAngularImpulse(CGFloat(10_000));
             _sinceTouch = 0;
         }
     }
@@ -178,7 +178,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
         obstacle.setupRandomPosition();
 
         // add new obstacle to scene
-        _physicsNode!.addChild(obstacle);
+        _physicsNode.addChild(obstacle);
         _obstacles.append(obstacle);
     }
 
@@ -187,31 +187,31 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
     {
         // scrolling code
         // multiplication CCTime on CGFloat does not work without of the override "*" operator
-        _hero!.position = ccp(_hero!.position.x + (delta * _scrollSpeed), _hero!.position.y);
-        _physicsNode!.position = ccp(_physicsNode!.position.x - (delta * _scrollSpeed), _physicsNode!.position.y);
+        _hero.position = ccp(_hero.position.x + (delta * _scrollSpeed), _hero.position.y);
+        _physicsNode.position = ccp(_physicsNode.position.x - (delta * _scrollSpeed), _physicsNode.position.y);
 
         // clamp vertical velocity of hero
-        let yVelocity: Float = clampf(Float(_hero!.physicsBody.velocity.y), -Float(Int.max), 200);
-        _hero!.physicsBody.velocity = ccp(0, CGFloat(yVelocity));
+        let yVelocity: Float = clampf(Float(_hero.physicsBody.velocity.y), -Float(Int.max), 200);
+        _hero.physicsBody.velocity = ccp(0, CGFloat(yVelocity));
 
         // clamp angular velocity and rotation of hero
         _sinceTouch += delta;
-        _hero!.rotation = clampf(_hero!.rotation, -30, 90);
-        if _hero!.physicsBody.allowsRotation
+        _hero.rotation = clampf(_hero.rotation, -30, 90);
+        if _hero.physicsBody.allowsRotation
         {
-            let angularVelocity = clampf(Float(_hero!.physicsBody.angularVelocity), -2, 1);
-            _hero!.physicsBody.angularVelocity = CGFloat(angularVelocity);
+            let angularVelocity = clampf(Float(_hero.physicsBody.angularVelocity), -2, 1);
+            _hero.physicsBody.angularVelocity = CGFloat(angularVelocity);
         }
         if _sinceTouch > 0.5
         {
-            _hero!.physicsBody.applyAngularImpulse(-40_000 * delta);
+            _hero.physicsBody.applyAngularImpulse(-40_000 * delta);
         }
 
         // respawn the obstacles when they out of screen
         var offScreenObstacles = Array<CCNode>();
         for obstacle in _obstacles
         {
-            let obstacleWorldPosition: CGPoint = _physicsNode!.convertToWindowSpace(obstacle.position);
+            let obstacleWorldPosition: CGPoint = _physicsNode.convertToWindowSpace(obstacle.position);
             let obstacleScreenPosition: CGPoint = self.convertToNodeSpace(obstacleWorldPosition);
             if obstacleScreenPosition.x < -obstacle.contentSize.width
             {
@@ -231,7 +231,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
         // reposition the grounds when they out of screen
         for ground in _grounds
         {
-            let groundWorldPosition = _physicsNode!.convertToWorldSpace(ground.position);
+            let groundWorldPosition = _physicsNode.convertToWorldSpace(ground.position);
             let groundScreenPosition = self.convertToNodeSpace(groundWorldPosition);
             if groundScreenPosition.x <= -(ground.contentSize.width)
             {

@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Aleksey Zhilin. All rights reserved.
 //
 //  This code based on original tutorial from site https://www.makeschool.com
-//  Link to original post writen by benjaminencz
+//  Link to original post writen by Benjamin Encz
 //  https://www.makeschool.com/gamernews/369/build-your-own-flappy-bird-with-spritebuilder-and
 //
 
 class Obstacle: CCNode
 {
     // code connection vars from SpriteBuilder
-    var _topPipe:    CCNode?;
-    var _bottomPipe: CCNode?;
+    var _topPipe:    CCNode!;
+    var _bottomPipe: CCNode!;
 
     // randomize division const
     let ARC4RANDOM_MAX:             Double  = 0x100000000;
@@ -37,10 +37,10 @@ class Obstacle: CCNode
     // prepare physics collision behavior for pipes
     func didLoadFromCCB()
     {
-        _topPipe!.physicsBody.sensor           = true;
-        _bottomPipe!.physicsBody.sensor        = true;
-        _topPipe!.physicsBody.collisionType    = "level";
-        _bottomPipe!.physicsBody.collisionType = "level";
+        _topPipe.physicsBody.sensor           = true;
+        _bottomPipe.physicsBody.sensor        = true;
+        _topPipe.physicsBody.collisionType    = "level";
+        _bottomPipe.physicsBody.collisionType = "level";
     }
 
     // randomize pipes vertical position
@@ -48,7 +48,7 @@ class Obstacle: CCNode
     {
         let random = Double(arc4random()) / ARC4RANDOM_MAX;
         let range = maximumYPositionTopPipe - minimumYPositionTopPipe;
-        _topPipe!.position = ccp(_topPipe!.position.x, minimumYPositionTopPipe + (random * range));
-        _bottomPipe!.position = ccp(_bottomPipe!.position.x, _topPipe!.position.y + pipeDistance);
+        _topPipe.position = ccp(_topPipe.position.x, minimumYPositionTopPipe + (random * range));
+        _bottomPipe.position = ccp(_bottomPipe.position.x, _topPipe.position.y + pipeDistance);
     }
 }

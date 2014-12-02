@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Aleksey Zhilin. All rights reserved.
 //
 //  This code based on original tutorial from site https://www.makeschool.com
-//  Link to original post writen by benjaminencz
+//  Link to original post writen by Benjamin Encz
 //  https://www.makeschool.com/gamernews/369/build-your-own-flappy-bird-with-spritebuilder-and
 //
 
