@@ -48,7 +48,7 @@ class Obstacle: CCNode
     {
         let random = Double(arc4random()) / ARC4RANDOM_MAX;
         let range = maximumYPositionTopPipe - minimumYPositionTopPipe;
-        _topPipe.position = ccp(_topPipe.position.x, minimumYPositionTopPipe + (random * range));
+        _topPipe.position = ccp(_topPipe.position.x, minimumYPositionTopPipe + (CGFloat(random) * range));
         _bottomPipe.position = ccp(_bottomPipe.position.x, _topPipe.position.y + pipeDistance);
     }
 }

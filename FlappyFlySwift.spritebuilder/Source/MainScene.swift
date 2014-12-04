@@ -10,16 +10,6 @@
 //  https://www.makeschool.com/gamernews/369/build-your-own-flappy-bird-with-spritebuilder-and
 //
 
-// override of the multiplication operator for scrolling code (see the update method)
-func * (a: CCTime, b: CGFloat) -> CGFloat
-{
-    return CGFloat(a) * b;
-}
-func * (a: CGFloat, b: CCTime) -> CGFloat
-{
-    return a * CGFloat(b);
-}
-
 class MainScene: CCNode, CCPhysicsCollisionDelegate
 {
     // drawing order enum
@@ -186,9 +176,8 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
     override func update(delta: CCTime)
     {
         // scrolling code
-        // multiplication CCTime on CGFloat does not work without of the override "*" operator
-        _hero.position = ccp(_hero.position.x + (delta * _scrollSpeed), _hero.position.y);
-        _physicsNode.position = ccp(_physicsNode.position.x - (delta * _scrollSpeed), _physicsNode.position.y);
+        _hero.position = ccp(_hero.position.x + (CGFloat(delta) * _scrollSpeed), _hero.position.y);
+        _physicsNode.position = ccp(_physicsNode.position.x - (CGFloat(delta) * _scrollSpeed), _physicsNode.position.y);
 
         // clamp vertical velocity of hero
         let yVelocity: Float = clampf(Float(_hero.physicsBody.velocity.y), -Float(Int.max), 200);
@@ -204,7 +193,7 @@ class MainScene: CCNode, CCPhysicsCollisionDelegate
         }
         if _sinceTouch > 0.5
         {
-            _hero.physicsBody.applyAngularImpulse(-40_000 * delta);
+            _hero.physicsBody.applyAngularImpulse(-40_000 * CGFloat(delta));
         }
 
         // respawn the obstacles when they out of screen
